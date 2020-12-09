@@ -2,15 +2,20 @@ import argparse
 import copy
 import math
 
+
 def parse_input(input_file):
     """
     expected format:
-    8-16 h: wqhjvhlgwtsgvlpf
     """
     rtn_list = []
     with open(input_file, 'r') as f:
         for line in f.readlines():
-            rtn_list.append(line.strip())
+            group = {}
+            if line == "\n":
+                continue
+            for char in line:
+                group[char] = 0
+            rtn_list.append(list(group.keys()))
     return rtn_list
 
 
@@ -106,11 +111,11 @@ def problem_2(seating):
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser("Day 5: Binary Boarding")
+    ap = argparse.ArgumentParser("Day 6: Custom Customs")
     ap.add_argument('input_file', help="txt file containig a bunch of numbers")
     
     args = ap.parse_args()
 
-    seating = parse_input(args.input_file)
-    # problem_1(seating)
-    problem_2(seating)
+    answers = parse_input(args.input_file)
+    problem_1(answers)
+    # problem_2(answers)
