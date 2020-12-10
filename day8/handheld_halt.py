@@ -4,45 +4,44 @@ import math
 
 
 def parse_input(input_file):
-    """
-    expected format:
-    """
     rtn_list = []
     with open(input_file, 'r') as f:
-        group = {}
-        people = 0
-        for line in f.readlines():
-            if line == "\n":
-                group["people"] = people
-                rtn_list.append(group)
-                people = 0
-                group = {}
-                continue
-
-            ans = line.strip()
-            people += 1
-            for char in ans:
-                if char not in group:
-                    group[char] = 1
-                else:
-                    group[char] += 1
+        lines = f.readlines()
+            
+    for line in lines:
+        space_split = line.split(" ")
+        rtn_list.append(space_split)
     
-    group["people"] = people
-    rtn_list.append(group)
-
     return rtn_list
 
 
-def problem_1(answers):
+def problem_1(commands):
     """
 
     """
-    total = 0
-    for ans in answers:
-        print(ans)
-        total += len(ans)
-    print(total)
-    return total
+    accumulator = 0
+    idx = 0
+    cmds = {}
+    while idx <= len(commands):
+        if idx not in cmds:
+            cmds[idx] = 1
+        else:
+            cmds[idx] += 1
+            break
+        cmd = commands[idx]
+        action = cmd[0]
+        value = int(cmd[1])
+        if action == 'acc':
+            accumulator += value
+        
+        if action == 'jmp':
+            idx += value
+        else:
+            idx += 1
+
+    print(accumulator)
+
+
 
 def problem_2(answers):
     """
@@ -73,6 +72,6 @@ if __name__ == "__main__":
     
     args = ap.parse_args()
 
-    answers = parse_input(args.input_file)
-    # problem_1(answers)
-    problem_2(answers)
+    cmds = parse_input(args.input_file)
+    problem_1(cmds)
+    # problem_2(answers)
