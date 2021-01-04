@@ -1,7 +1,7 @@
 import argparse
 import copy
 import json
-
+import re
 
 def parse_input(input_file):
     """
@@ -21,12 +21,11 @@ def parse_input(input_file):
                     inside = inside[:-1]
                 inner_bags.append(inside)
             parsed[bag] = inner_bags
-
+    print(json.dumps(parsed, indent=4))
     return parsed
 
 
 def who_can_hold_me(color, bags):
-    # print(color)
     if color == "no other bag":
         return []
     
@@ -61,13 +60,49 @@ def problem_1(bags):
     
     total_bags = set(total_bags)
     total_bags = sorted(total_bags)
-    print(json.dumps(total_bags, indent=4))
+    # print(json.dumps(total_bags, indent=4))
     print(len(total_bags))
     return len(total_bags)
 
 
+def who_can_i_hold(color, bags, bag_count=1):
+    for bag in bags[color+" bags"]: 
+        if bag == "no other bags":
+            return 1
+        print(bag)
+
+        re_search = re.search("(?P<count>[1-9]*) (?P<color>.*) bag", bag)
+        if re_search is None:
+            continue
+        count = int(re_search.group("count"))
+        color = re_search.group("color")
+        
+        print(count)
+        print(color)
+        
+        bag_count += count * who_can_i_hold(color, bags)
+
+    return bag_count
+        
+
+
 def problem_2(bags):
+    """
+    Trying to see the count of bags
+    """
+    print(len(bags))
+    total_bags = []
+
+    print(who_can_i_hold("shiny gold", bags) - 1)
+    # print(json.dumps(holders, indent=4))
+    # total_bags.extend(holders)
     
+    # total_bags = set(total_bags)
+    # total_bags = sorted(total_bags)
+    # # print(json.dumps(total_bags, indent=4))
+    # print(len(total_bags))
+    # return len(total_bags)
+
 
 
 
@@ -78,5 +113,5 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     bags = parse_input(args.input_file)
-    problem_1(bags)
-    # problem_2(answers)
+    # problem_1(bags)
+    problem_2(bags)
