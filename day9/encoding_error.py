@@ -14,27 +14,51 @@ def parse_input(input_file):
     
     return rtn_list
 
-
-def problem_1(preamble, nums):
+def find_invalid(preamble, nums):
     for idx in range(0, len(nums)):
         target = nums[idx + preamble]
-        print(target)
         found = False
         for head in range(idx, idx + preamble - 1):
             if nums[head] > target:
                 continue
-            print(nums[head])
+        
             for tail in range(head + 1, idx + preamble):
-                print(nums[tail])
                 if nums[tail] > target:
                     continue
                 if nums[head] + nums[tail] == target:
                     found = True
             if found:
                 break
+        
         if not found:
             print(target)
             return target
+
+
+def problem_1(preamble, nums):
+    print(find_invalid(preamble, nums))
+
+
+def problem_2(preamble, nums):
+    invalid = find_invalid(preamble, nums)
+
+    
+    for head in range(0, len(nums)):
+        if nums[head] >= invalid:
+            continue
+        stuff = [nums[head]]
+
+        for tail in range(head + 1, len(nums)):
+            stuff.append(nums[tail])
+
+            x = sum(stuff)
+
+            if x == invalid:
+                print('match')
+                print(stuff)
+                print(min(stuff) + max(stuff))
+            elif x > invalid:
+                break
 
 
 if __name__ == "__main__":
@@ -45,5 +69,5 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     cmds = parse_input(args.input_file)
-    problem_1(int(args.nums), cmds)
-    # problem_2(cmds)
+    # problem_1(int(args.nums), cmds)
+    problem_2(int(args.nums), cmds)
