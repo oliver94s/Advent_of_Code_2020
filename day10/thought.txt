@@ -1,0 +1,5 @@
+This one was pretty fun.
+
+There are a couple way that I could probably change the way that I did this. Something that 
+I would be interested in seeing is a better way to go about this without iterating through
+the list so many times. 
